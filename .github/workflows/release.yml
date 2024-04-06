@@ -27,18 +27,42 @@ jobs:
         path: ./dist
         if-no-files-found: error
 
-  publish:
+  publish-to-pypi:
     name: publish
     needs:
     - build
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write # for actions/checkout to fetch code and softprops/action-gh-release
       id-token: write
 
     steps:
-    - uses: actions/download-artifact@v4
+    - name: Download artifacts from build
+      uses: actions/download-artifact@v4
+      with:
+        name: artifacts
+        path: ./dist
+
+    - name: Push build artifacts to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.8.14
+      with:
+        # TODO point this to real pypi once we are confident the pipeline works
+        repository-url: https://test.pypi.org/legacy/
+
+
+  add-to-github-release:
+    name: sign the artifacts and add them to the github release
+    needs:
+    - publish-to-pypi
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # for softprops/action-gh-release
+      id-token: write # for sigstore signing
+
+    steps:
+    - name: Download artifacts from build
+      uses: actions/download-artifact@v4
       with:
         name: artifacts
         path: ./dist
@@ -54,9 +78,3 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: ./dist/*
-
-    - name: Push build artifacts to PyPI
-      uses: pypa/gh-action-pypi-publish@v1.8.14
-      with:
-        # TODO point this to real pypi once we are confident the pipeline works
-        repository-url: https://test.pypi.org/legacy/
