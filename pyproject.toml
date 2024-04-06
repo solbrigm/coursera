@@ -16,7 +16,7 @@ dev = [
 
 
 [tool.hatch.version]
-path = "tecton_client/__about__.py"
+path = "msolbrig_test_client/__about__.py"
 
 [project.urls]
 "Source" = "https://github.com/solbrigm/coursera"
