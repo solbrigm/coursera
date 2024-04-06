@@ -55,7 +55,9 @@ class GatewayTimeoutError(TectonHttpException):
     STATUS_CODE = 504
 
 
-_HTTP_ERRORS: dict = {error.STATUS_CODE: error for error in TectonHttpException.__subclasses__()}
+_HTTP_ERRORS: dict = {
+    error.STATUS_CODE: error for error in TectonHttpException.__subclasses__()
+}
 
 
 def convert_exception(httpx_exception: httpx.HTTPStatusError) -> TectonHttpException:
@@ -65,7 +67,11 @@ def convert_exception(httpx_exception: httpx.HTTPStatusError) -> TectonHttpExcep
     if exception_class:
         message = httpx_exception.response.json().get("message")
         return exception_class(
-            status_code=status_code, reason_phrase=httpx_exception.response.reason_phrase, message=message
+            status_code=status_code,
+            reason_phrase=httpx_exception.response.reason_phrase,
+            message=message,
         )
     else:
-        return TectonHttpException(status_code, httpx_exception.response.reason_phrase, "")
+        return TectonHttpException(
+            status_code, httpx_exception.response.reason_phrase, ""
+        )
