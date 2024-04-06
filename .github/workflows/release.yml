@@ -1,9 +1,8 @@
 name: build hatchling
 
 on:
-  push:
-    tags:
-    - thing-v*
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -36,12 +35,20 @@ jobs:
 
     permissions:
       contents: write # for actions/checkout to fetch code and softprops/action-gh-release
+      id-token: write
 
     steps:
     - uses: actions/download-artifact@v4
       with:
         name: artifacts
         path: ./dist
+
+    - name: Sign the dists with Sigstore
+      uses: sigstore/gh-action-sigstore-python@v1.2.3
+      with:
+        inputs: >-
+          ./dist/*.tar.gz
+          ./dist/*.whl
 
     - name: Add assets to current release
       uses: softprops/action-gh-release@v2
