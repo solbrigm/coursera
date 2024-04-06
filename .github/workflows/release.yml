@@ -1,11 +1,9 @@
-permissions:
-  contents: write
-
 name: build hatchling
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+    - thing-v*
 
 jobs:
   build:
