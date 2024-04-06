@@ -10,9 +10,6 @@ jobs:
     name: Build wheels and source distribution
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write # for actions/checkout to fetch code and softprops/action-gh-release
-
     steps:
     - uses: actions/checkout@v4
 
@@ -38,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
+      contents: write # for actions/checkout to fetch code and softprops/action-gh-release
 
     steps:
     - uses: actions/download-artifact@v4
