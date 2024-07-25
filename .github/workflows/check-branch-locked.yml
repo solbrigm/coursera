@@ -1,7 +1,5 @@
 name: Check Branch Lock
-on:
-  pull_request:
-    types: [edited]
+on: workflow_dispatch
 
 jobs:
   check-branch-lock:
