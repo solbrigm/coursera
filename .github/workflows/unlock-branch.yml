@@ -1,4 +1,4 @@
-name: Lock Branch
+name: Unlock Branch
 on: workflow_dispatch
 
 jobs:
