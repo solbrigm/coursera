@@ -11,7 +11,7 @@ jobs:
       with:
         name: lock-flag
         workflow: lock-branch.yml
-        path: lock-flag
+        path: .
         # locks branch for 7 days
         if_no_artifact_found: ignore
-    - run: ls lock-flag
+    - run: bash .github/test_file.sh 
