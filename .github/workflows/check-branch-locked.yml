@@ -7,10 +7,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: dawidd6/action-download-artifact@v6
       with:
         name: lock-flag
+        workflow: lock-branch.yml
         path: lock-flag.txt
         # locks branch for 7 days
-        retention-days: 7
+        if_no_artifact_found: ignore
     - run: cat lock-flag.txt
