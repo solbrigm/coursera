@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - env:
-          LOCKED: ${{ inputs.action == "LOCK"}}
+          LOCKED: ${{ inputs.action == 'LOCK'}}
         run: |
           # Create JSON content and write to a file using jq
           echo "{\"locked\": $LOCKED}" | jq '.' > lock-flag.json
