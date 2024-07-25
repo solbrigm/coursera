@@ -6,30 +6,31 @@ on:
 
 jobs:
   check-branch-lock:
+    # Do not run this check if the pull request labels include "bypass-code-freeze"
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'bypass-code-freeze') }}
+
     name: Check if Lock Flag is set
     runs-on: ubuntu-latest
 
     steps:
-    - uses: dawidd6/action-download-artifact@v6
-      with:
-        name: lock-flag
-        workflow: lock-branch.yml
-        # locks branch for 7 days
-        if_no_artifact_found: ignore
-    - run: |
-    - run: |
-        # Check if the file 'locked.txt' exists
-        if [ -f "lock-flag.txt" ]; then
-            # Check the contents of the file
-            if grep -q "LOCK" "lock-flag.txt"; then
-                echo "The file 'lock-flag.txt' contains 'LOCK'. Failing."
-                exit 1
+      - uses: dawidd6/action-download-artifact@v6
+        with:
+          name: lock-flag
+          workflow: lock-branch.yml
+          # locks branch for 7 days
+          if_no_artifact_found: ignore
+      - run: |
+          # Check if the file 'locked.txt' exists
+          if [ -f "lock-flag.txt" ]; then
+              # Check the contents of the file
+            if jq -e '.locked' output.json | grep -q 'true'; then
+              echo "The locked flag is true, branch is locked"
+              exit 1
             else
-                echo "The file 'lock-flag.txt' does not contain 'LOCK'. Passing."
-                exit 0
+              echo "The locked flag is false, branch is open"
+              exit 0
             fi
-        else
-            echo "The file 'lock-flag.txt' does not exist. Passing."
-            exit 0
-        fi
+          else
+              echo "The file 'lock-flag.txt' does not exist. Passing."
+              exit 0
+          fi
