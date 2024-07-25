@@ -11,21 +11,21 @@ jobs:
       with:
         name: lock-flag
         workflow: lock-branch.yml
-        path: .
         # locks branch for 7 days
         if_no_artifact_found: ignore
     - run: |
+    - run: |
         # Check if the file 'locked.txt' exists
-        if [ -f "locked.txt" ]; then
+        if [ -f "lock-flag.txt" ]; then
             # Check the contents of the file
-            if grep -q "LOCKED" "locked.txt"; then
-                echo "The file 'locked.txt' contains 'LOCKED'. Failing."
+            if grep -q "LOCKED" "lock-flag.txt"; then
+                echo "The file 'lock-flag.txt' contains 'LOCKED'. Failing."
                 exit 1
             else
-                echo "The file 'locked.txt' does not contain 'LOCKED'. Passing."
+                echo "The file 'lock-flag.txt' does not contain 'LOCKED'. Passing."
                 exit 0
             fi
         else
-            echo "The file 'locked.txt' does not exist. Passing."
+            echo "The file 'lock-flag.txt' does not exist. Passing."
             exit 0
         fi
