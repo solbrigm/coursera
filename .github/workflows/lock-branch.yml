@@ -19,15 +19,8 @@ jobs:
 
     steps:
       - env:
-          ACTION: ${{ inputs.action }}
+          LOCKED: ${{ inputs.action == "LOCK"}}
         run: |
-          # Check the value of the ACTION environment variable
-          if [ "$ACTION" == "LOCK" ]; then
-            LOCKED=true
-          else
-            LOCKED=false
-          fi
-
           # Create JSON content and write to a file using jq
           echo "{\"locked\": $LOCKED}" | jq '.' > lock-flag.json
 
