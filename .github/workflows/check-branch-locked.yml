@@ -6,10 +6,9 @@ on:
 
 jobs:
   check-branch-lock:
+    if: !contains(github.event.pull_request.labels.*.name, 'bypass-code-freeze')
     name: Check if Lock Flag is set
     runs-on: ubuntu-latest
-
-    # if: !contains(github.event.pull_request.labels.*.name, 'bypass-code-freeze')
 
     steps:
     - uses: dawidd6/action-download-artifact@v6
