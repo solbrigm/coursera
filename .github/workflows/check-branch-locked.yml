@@ -6,7 +6,7 @@ on:
 
 jobs:
   check-branch-lock:
-    if: !contains(github.event.pull_request.labels.*.name, 'bypass-code-freeze')
+    if: github.repository == 'octo-org/octo-repo-prod'
     name: Check if Lock Flag is set
     runs-on: ubuntu-latest
 
