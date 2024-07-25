@@ -20,10 +20,10 @@ jobs:
           # locks branch for 7 days
           if_no_artifact_found: ignore
       - run: |
-          # Check if the file 'locked.txt' exists
-          if [ -f "lock-flag.txt" ]; then
+          # Check if the file 'lock-flag.json' exists
+          if [ -f "lock-flag.json" ]; then
               # Check the contents of the file
-            if jq -e '.locked' output.json | grep -q 'true'; then
+            if jq -e '.locked' lock-flag.json | grep -q 'true'; then
               echo "The locked flag is true, branch is locked"
               exit 1
             else
@@ -31,6 +31,6 @@ jobs:
               exit 0
             fi
           else
-              echo "The file 'lock-flag.txt' does not exist. Passing."
+              echo "The file 'lock-flag.json' does not exist. Passing."
               exit 0
           fi

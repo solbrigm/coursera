@@ -29,11 +29,11 @@ jobs:
           fi
 
           # Create JSON content and write to a file using jq
-          echo "{\"locked\": $LOCKED}" | jq '.' > output.json
+          echo "{\"locked\": $LOCKED}" | jq '.' > lock-flag.json
 
       - uses: actions/upload-artifact@v4
         with:
           name: lock-flag
-          path: lock-flag.txt
+          path: lock-flag.json
           # locks branch for 7 days
           retention-days: 7
