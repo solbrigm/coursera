@@ -1,10 +1,15 @@
 name: Check Branch Lock
-on: workflow_dispatch
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, reopened, synchronize, labeled]
 
 jobs:
   check-branch-lock:
     name: Check if Lock Flag is set
     runs-on: ubuntu-latest
+
+    if: !contains(github.event.pull_request.labels.*.name, 'bypass-code-freeze')
 
     steps:
     - uses: dawidd6/action-download-artifact@v6
