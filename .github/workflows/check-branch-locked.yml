@@ -18,11 +18,11 @@ jobs:
         # Check if the file 'locked.txt' exists
         if [ -f "lock-flag.txt" ]; then
             # Check the contents of the file
-            if grep -q "LOCKED" "lock-flag.txt"; then
-                echo "The file 'lock-flag.txt' contains 'LOCKED'. Failing."
+            if grep -q "LOCK" "lock-flag.txt"; then
+                echo "The file 'lock-flag.txt' contains 'LOCK'. Failing."
                 exit 1
             else
-                echo "The file 'lock-flag.txt' does not contain 'LOCKED'. Passing."
+                echo "The file 'lock-flag.txt' does not contain 'LOCK'. Passing."
                 exit 0
             fi
         else
