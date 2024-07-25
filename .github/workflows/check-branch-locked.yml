@@ -1,0 +1,19 @@
+name: Check Branch Lock
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  check-branch-lock:
+    if: github.event.review.state == 'approved'
+    name: Check if Lock Flag is set
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        name: lock-flag
+        path: lock-flag.txt
+        # locks branch for 7 days
+        retention-days: 7
+    - run: cat lock-flag.txt

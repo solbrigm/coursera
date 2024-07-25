@@ -1,0 +1,17 @@
+name: Lock Branch
+on: workflow_dispatch
+
+jobs:
+  upload-flag:
+    name: Upload a flag to github artifacts to lock a branch
+    runs-on: ubuntu-latest
+
+    steps:
+    - run: mkdir -p path/to/artifact
+    - run: echo "LOCKED" > lock-flag.txt
+    - uses: actions/upload-artifact@v4
+      with:
+        name: lock-flag
+        path: lock-flag.txt
+        # locks branch for 7 days
+        retention-days: 7
