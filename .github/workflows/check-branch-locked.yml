@@ -1,11 +1,10 @@
 name: Check Branch Lock
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [edited]
 
 jobs:
   check-branch-lock:
-    if: github.event.review.state == 'approved'
     name: Check if Lock Flag is set
     runs-on: ubuntu-latest
 
