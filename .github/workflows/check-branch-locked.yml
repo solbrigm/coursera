@@ -19,6 +19,8 @@ jobs:
         with:
           result-encoding: string
           script: |
+            const fs = require('fs');
+            
             console.log("Finding Last run of lock-branch")
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
@@ -29,7 +31,7 @@ jobs:
             const lastRun = runs.data.workflow_runs.reduce(function(prev, current) {
                 return (prev.run_number > current.run_number) ? prev : current
             })
-            console.log("Last run of lock-branch:" + lastRun.html_url)
+            console.log("Last run of lock-branch.yml: " + lastRun.html_url)
             
             
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
