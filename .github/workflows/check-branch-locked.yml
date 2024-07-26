@@ -19,7 +19,6 @@ jobs:
         with:
           result-encoding: string
           script: |
-            echo 
             github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
