@@ -39,8 +39,8 @@ jobs:
                            repo: context.repo.repo,
                            run_id: lastRun.id,
                         });
-            console.log(artifacts)
-            const [lockFile] = artifacts_main.data.artifacts.filter((artifact) =>
+            console.log(artifacts.data.artifacts)
+            const [lockFile] = artifacts.data.artifacts.filter((artifact) =>
               artifact.name == "lock-file");
             const downloadWorkflow = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
