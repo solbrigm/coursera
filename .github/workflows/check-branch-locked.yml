@@ -1,8 +1,10 @@
 name: Check Branch Lock
-on:
-  pull_request:
-    branches: [master]
-    types: [opened, reopened, synchronize, labeled]
+on: workflow_dispatch
+
+#on:
+#  pull_request:
+#    branches: [master]
+#    types: [opened, reopened, synchronize, labeled]
 
 jobs:
   check-branch-lock:
@@ -13,24 +15,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: dawidd6/action-download-artifact@v6
+      - uses: actions/github-script@v7
         with:
-          name: lock-flag
-          workflow: lock-branch.yml
-          # locks branch for 7 days
-          if_no_artifact_found: ignore
-      - run: |
-          # Check if the file 'lock-flag.json' exists
-          if [ -f "lock-flag.json" ]; then
-              # Check the contents of the file
-            if jq -e '.locked' lock-flag.json | grep -q 'true'; then
-              echo "The locked flag is true, branch is locked"
-              exit 1
-            else
-              echo "The locked flag is false, branch is open"
-              exit 0
-            fi
-          else
-              echo "The file 'lock-flag.json' does not exist. Passing."
-              exit 0
-          fi
+          script: |
+            github.rest.actions.listWorkflowRuns(context.repo);
+
+#      - run: |
+#          # Check if the file 'lock-flag.json' exists
+#          if [ -f "lock-flag.json" ]; then
+#              # Check the contents of the file
+#            if jq -e '.locked' lock-flag.json | grep -q 'true'; then
+#              echo "The locked flag is true, branch is locked"
+#              exit 1
+#            else
+#              echo "The locked flag is false, branch is open"
+#              exit 0
+#            fi
+#          else
+#              echo "The file 'lock-flag.json' does not exist. Passing."
+#              exit 0
+#          fi
