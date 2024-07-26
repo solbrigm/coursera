@@ -17,8 +17,13 @@ jobs:
     steps:
       - uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
-            github.rest.actions.listWorkflowRuns(context.repo);
+            echo 
+            github.rest.actions.listWorkflowRuns({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
 
 #      - run: |
 #          # Check if the file 'lock-flag.json' exists
