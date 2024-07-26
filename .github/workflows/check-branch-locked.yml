@@ -29,26 +29,27 @@ jobs:
             const lastRun = runs.data.workflow_runs.reduce(function(prev, current) {
                 return (prev.run_number > current.run_number) ? prev : current
             })
-            console.log("Last run of lock-branch:")
-            console.log(lastRun.html_url)
+            console.log("Last run of lock-branch:" + lastRun.html_url)
             
             
-            console.log("Downloading Artifacts:")
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                            owner: context.repo.owner,
                            repo: context.repo.repo,
                            run_id: lastRun.id,
                         });
+            console.log("Found artifacts:")
             console.log(artifacts.data.artifacts)
             const [lockFile] = artifacts.data.artifacts.filter((artifact) =>
-              artifact.name == "lock-file");
+              artifact.name == "lock-flag");
             const downloadWorkflow = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
                artifact_id: lockFile.id,
                archive_format: "zip",
             });
-            fs.writeFileSync("lock-flag.json", Buffer.from(downloadWorkflow.data));
+            fs.writeFileSync("lock-flag.zip", Buffer.from(downloadWorkflow.data));
+      - name: Unzip the output of 'main'
+        run: unzip lock-flag.zip
       - name: Check file
         run: |
           # Check if the file 'lock-flag.json' exists
