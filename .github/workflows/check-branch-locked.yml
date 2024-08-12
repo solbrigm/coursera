@@ -42,7 +42,7 @@ jobs:
             console.log(artifacts.data.artifacts)
             const [lockFile] = artifacts.data.artifacts.filter((artifact) =>
               artifact.name == "lock-flag");
-            const expirationDate = new Date(artifact.expires_at);
+            const expirationDate = new Date(lockFile.expires_at);
             if (expirationDate <  Date.now()) {
               console.log("Artifact expired, no lock")
               return true
