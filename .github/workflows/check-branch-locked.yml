@@ -55,7 +55,10 @@ jobs:
             });
             fs.writeFileSync("lock-flag.zip", Buffer.from(downloadWorkflow.data));
       - name: Unzip the output of 'main'
-        run: unzip lock-flag.zip
+        run:  |
+          if [ -f "lock-flag.zip" ]; then
+            unzip lock-flag.zip
+          fi
       - name: Check file
         run: |
           # Check if the file 'lock-flag.json' exists
