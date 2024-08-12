@@ -20,7 +20,7 @@ jobs:
           result-encoding: string
           script: |
             const fs = require('fs');
-            
+
             console.log("Finding Last run of lock-branch")
             const runs = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
@@ -31,8 +31,7 @@ jobs:
             const lastRun = runs.data.workflow_runs.reduce(function(prev, current) {
                 return (prev.run_number > current.run_number) ? prev : current
             })
-            console.log("Last run of lock-branch.yml: " + lastRun.html_url)
-            
+            console.log("Last run of lock-branch.yml: " + lastRun.html_url)            
             
             const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                            owner: context.repo.owner,
@@ -43,6 +42,11 @@ jobs:
             console.log(artifacts.data.artifacts)
             const [lockFile] = artifacts.data.artifacts.filter((artifact) =>
               artifact.name == "lock-flag");
+            const expirationDate = new Date(artifact.expires_at);
+            if (expirationDate <  Date.now()) {
+              console.log("Artifact expired, no lock")
+              return true
+            }
             const downloadWorkflow = await github.rest.actions.downloadArtifact({
                owner: context.repo.owner,
                repo: context.repo.repo,
